@@ -1,34 +1,45 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Routes publiques
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login',    [AuthController::class, 'login']);
 
-Route::group([],function(){
-    Route::post('/register',[AuthController::class,'register']);
-    Route::post('/login',[AuthController::class,'login']);
-    Route::post('/logout',[AuthController::class,'logout'])->middleware('auth:api');
-    Route::get('/me',[AuthController::class,'me'])->middleware(['auth:api']);
-});
+// Routes protégées
+Route::middleware('auth:api')->group(function () {
 
-Route::middleware(['auth:api', 'role:candidat'])->group(function () {
-    Route::post('/offres/{offre}/candidater', [CandidatureController::class, 'postuler']);
-    Route::get('/mes-candidatures', [CandidatureController::class, 'mesCandidatures']);
-});
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me',      [AuthController::class, 'me']);
 
-Route::middleware(['auth:api', 'role:recruteur'])->group(function () {
-    Route::get('/offres/{offre}/candidatures', [CandidatureController::class, 'candidaturesDuneOffre']);
-    Route::patch('/candidatures/{candidature}/statut', [CandidatureController::class, 'changerStatut']);
-});
+    //Profils
+    Route::middleware('role:candidat')->group(function () {
+        Route::post('/profil',                            [ProfilController::class, 'store']);
+        Route::get('/profil',                             [ProfilController::class, 'show']);
+        Route::put('/profil',                             [ProfilController::class, 'update']);
+        Route::post('/profil/competences',                [ProfilController::class, 'addCompetence']);
+        Route::delete('/profil/competences/{competence}', [ProfilController::class, 'removeCompetence']);
+    });
 
-Route::middleware(['auth:api', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/users', [AdminController::class, 'listeUsers']);
-    Route::delete('/users/{user}', [AdminController::class, 'supprimerUser']);
-    Route::patch('/offres/{offre}', [AdminController::class, 'toggleOffre']);
+    //Candidatures
+    Route::middleware('role:candidat')->group(function () {
+        Route::post('/offres/{offre}/candidater', [CandidatureController::class, 'postuler']);
+        Route::get('/mes-candidatures',           [CandidatureController::class, 'mesCandidatures']);
+    });
+
+    Route::middleware('role:recruteur')->group(function () {
+        Route::get('/offres/{offre}/candidatures',         [CandidatureController::class, 'candidaturesDuneOffre']);
+        Route::patch('/candidatures/{candidature}/statut', [CandidatureController::class, 'changerStatut']);
+    });
+
+    //Administration
+    Route::middleware('role:admin')->prefix('admin')->group(function () {
+        Route::get('/users',           [AdminController::class, 'listeUsers']);
+        Route::delete('/users/{user}', [AdminController::class, 'supprimerUser']);
+        Route::patch('/offres/{offre}',[AdminController::class, 'toggleOffre']);
+    });
 });
