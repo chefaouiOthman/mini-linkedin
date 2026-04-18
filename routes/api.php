@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\CandidatureController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\OffreController;
 use Illuminate\Support\Facades\Route;
 
 // Routes publiques
@@ -24,7 +25,18 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/profil/competences',                [ProfilController::class, 'addCompetence']);
         Route::delete('/profil/competences/{competence}', [ProfilController::class, 'removeCompetence']);
     });
+    //Offre d’emploi
+    
+    Route::get('offres',        [OffreController::class, 'index']);
+    Route::get('offres/{id}',   [OffreController::class, 'detail']);
 
+
+//  Recruteur uniquement 
+    Route::middleware('role:recruteur')->group(function () {
+    Route::post('offres',             [OffreController::class, 'creation']);
+    Route::put('offres/{id}',         [OffreController::class, 'update']);
+    Route::delete('offres/{id}',      [OffreController::class, 'destroy']);
+    });
     //Candidatures
     Route::middleware('role:candidat')->group(function () {
         Route::post('/offres/{offre}/candidater', [CandidatureController::class, 'postuler']);
