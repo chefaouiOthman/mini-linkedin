@@ -48,7 +48,7 @@ class OffreController extends Controller
       }
       $user_id=auth('api')->user()->id;
       if($user_id!=$offre->user_id){
-        return response()->json(['message' => 'Not allowed'], 403);
+        return response()->json(['message' => 'Not allowed This is not your offer.'], 403);
       }
      $validat = $request->validate([
         'titre' => 'sometimes|string',
