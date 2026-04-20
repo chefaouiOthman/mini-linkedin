@@ -27,7 +27,7 @@ class CreationRequestOffre extends FormRequest
         'description'=>'nullable|string',
         'localisation'=>'required|string',
         'type'=>'string|in:CDI,CDD,stage',
-        'actif'=>'booalean|string'
+        'actif'=>'boolean|string'
         ];
     }
 }

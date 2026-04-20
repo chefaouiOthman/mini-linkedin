@@ -54,7 +54,8 @@ class OffreController extends Controller
         'titre' => 'sometimes|string',
         'description' => 'sometimes|string',
         'localisation' => 'nullable|string',
-        'type' => 'nullable|string'
+        'type' => 'nullable|string|in:CDI,CDD,stage',
+        'actif' =>'boolean'
       ]);
    
       
