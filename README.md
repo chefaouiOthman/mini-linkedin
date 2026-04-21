@@ -208,9 +208,10 @@ Les collections Postman sont disponibles dans le dossier `/postman` :
 
 | Fichier | Développeur | Couverture |
 |---------|-------------|-----------|
-| `mini-linkedin-profils.json` | Chefaoui Othman | Auth + Profils candidats |
-
----
+| `Authentification.postman_collection.json` | Elmounghanizi Ammar | Register, Login, Logout |
+| `Profils_tests.postman_collection.json` | Chefaoui Othman | Profils candidats + cas d'erreur |
+| `Offres d'Emploi.postman_collection.json` | Nait Abderrahmane Hamza | CRUD offres + filtres + pagination |
+| `candidature-admin.json` | Sahih Mohamed Rida | Candidatures + Administration |
 
 ## 📁 Structure du projet
 
