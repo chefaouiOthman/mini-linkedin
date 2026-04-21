@@ -188,10 +188,9 @@ php artisan migrate:fresh --seed
 ### Administration — `role:admin`
 | Méthode | Route | Description |
 |---------|-------|-------------|
-| GET | `/api/admin/users` | Liste de tous les utilisateurs |
-| DELETE | `/api/admin/users/{user}` | Supprimer un compte |
-| PATCH | `/api/admin/offres/{offre}` | Activer ou désactiver une offre |
-
+| GET | `/api/admin/users` | Liste de tous les utilisateurs avec leurs profils |
+| DELETE | `/api/admin/users/{user}` | Supprimer un compte (les admins sont protégés) |
+| PATCH | `/api/admin/offres/{offre}` | Basculer l'état actif/inactif d'une offre |
 ---
 
 ## ⚡ Events & Listeners
