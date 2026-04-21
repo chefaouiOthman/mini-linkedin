@@ -20,7 +20,7 @@ Une API RESTful construite avec Laravel, simulant une plateforme de recrutement 
 - PHP >= 8.4
 - Composer
 - MySQL
-- Laravel 11
+- Laravel 13
 
 ---
 
